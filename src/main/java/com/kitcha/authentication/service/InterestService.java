@@ -5,8 +5,6 @@ import com.kitcha.authentication.entity.UserEntity;
 import com.kitcha.authentication.exception.EmailNotFoundException;
 import com.kitcha.authentication.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service

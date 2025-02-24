@@ -25,7 +25,7 @@ public class JwtUtils {
     public String generateToken(CustomUserDetails customUserDetails) {
         Date now = new Date();
 
-        String jwtToken = Jwts.builder()
+        return Jwts.builder()
                 .claim("nickname", customUserDetails.getNickname())
                 .claim("role", customUserDetails.getRole())
                 .subject(customUserDetails.getUsername())
@@ -34,9 +34,5 @@ public class JwtUtils {
                 .expiration(new Date(now.getTime() + this.expirationTime))
                 .signWith(this.hmacKey, Jwts.SIG.HS256)
                 .compact();
-        // TODO : delete log
-        log.debug(jwtToken);
-
-        return jwtToken;
     }
 }

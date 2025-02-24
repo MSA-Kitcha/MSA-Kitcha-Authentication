@@ -8,6 +8,7 @@ import com.kitcha.authentication.service.LoginService;
 import com.kitcha.authentication.service.SignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginMember(@Valid @RequestBody LoginDto dto) {
-        String jwtToken = loginService.authenticate(dto);
+        Pair<String, String> infomations = loginService.authenticate(dto);
+        String jwtToken = infomations.getFirst();
+        String role = infomations.getSecond();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + jwtToken);
 
-        return ResponseEntity.ok().headers(headers).body(singletonMap("message", "로그인 성공"));
+        return ResponseEntity.ok().headers(headers).body(
+                Map.of("message", "로그인 성공", "role", role));
     }
 
     @PostMapping("/sign-up")
