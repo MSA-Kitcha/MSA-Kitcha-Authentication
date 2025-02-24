@@ -24,7 +24,7 @@ public class UserControllerExceptionHandler {
 
     // DuplicateException 처리 (signUpMember)
     @ExceptionHandler(DuplicateException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(DuplicateException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(singletonMap("message", e.getMessage()));
     }
 

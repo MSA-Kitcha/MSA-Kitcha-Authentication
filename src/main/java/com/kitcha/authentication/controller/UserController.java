@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/interest")
-    public ResponseEntity<Map<String, String>> setInterest(@RequestHeader("email") String email, @Valid @RequestBody InterestDto dto) {
+    public ResponseEntity<Map<String, String>> setInterest(@RequestHeader("X-User-Email") String email, @Valid @RequestBody InterestDto dto) {
         interestService.setInterest(email, dto);
 
         return ResponseEntity.ok(singletonMap("message", "관심사 설정 성공"));

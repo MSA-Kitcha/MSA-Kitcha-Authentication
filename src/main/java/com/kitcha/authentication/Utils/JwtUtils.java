@@ -18,8 +18,8 @@ public class JwtUtils {
     private final Long expirationTime;
 
     public JwtUtils(Environment env) {
-        this.hmacKey = Keys.hmacShaKeyFor(Objects.requireNonNull(env.getProperty("token.secret")).getBytes());
-        this.expirationTime = Long.parseLong(Objects.requireNonNull(env.getProperty("token.expiration-time")));
+        this.hmacKey = Keys.hmacShaKeyFor(Objects.requireNonNull(env.getProperty("TOKEN_SECRET")).getBytes());
+        this.expirationTime = Long.parseLong(Objects.requireNonNull(env.getProperty("TOKEN_EXPIRATION_TIME")));
     }
 
     public String generateToken(CustomUserDetails customUserDetails) {
