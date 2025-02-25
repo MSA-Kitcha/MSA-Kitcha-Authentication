@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,24 @@ public class UserController {
         signUpService.signUpMember(dto);
 
         return ResponseEntity.ok(singletonMap("message", "회원가입 성공"));
+    }
+
+    @GetMapping("/email-check")
+    public ResponseEntity<Map<String, String>> emailCheck(@RequestParam String email) {
+        if (signUpService.emailExists(email)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(singletonMap("message", "이미 가입된 Email 입니다."));
+        } else {
+            return ResponseEntity.ok(singletonMap("message", "가입 가능한 Email 입니다."));
+        }
+    }
+
+    @GetMapping("/nickname-check")
+    public ResponseEntity<Map<String, String>> nicknameCheck(@RequestParam String nickname) {
+        if (signUpService.nicknameExists(nickname)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(singletonMap("message", "이미 가입된 닉네임 입니다."));
+        } else {
+            return ResponseEntity.ok(singletonMap("message", "가입 가능한 닉네임 입니다."));
+        }
     }
 
     @PostMapping("/interest")

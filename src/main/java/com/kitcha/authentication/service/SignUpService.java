@@ -30,4 +30,12 @@ public class SignUpService {
         userEntity.setRole("USER");
         userRepository.save(userEntity);
     }
+
+    public boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean nicknameExists(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }
