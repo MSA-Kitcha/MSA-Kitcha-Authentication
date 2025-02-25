@@ -77,6 +77,13 @@ public class UserController {
         }
     }
 
+    @GetMapping("/interest")
+    public ResponseEntity<Map<String, String>> interest(@RequestHeader("X-User-Email") String email) {
+        String interest = interestService.getInterest(email);
+
+        return ResponseEntity.ok(singletonMap("interest", interest));
+    }
+
     @PostMapping("/interest")
     public ResponseEntity<Map<String, String>> setInterest(@RequestHeader("X-User-Email") String email, @Valid @RequestBody InterestDto dto) {
         interestService.setInterest(email, dto);

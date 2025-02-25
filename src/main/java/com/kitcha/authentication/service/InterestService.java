@@ -21,4 +21,13 @@ public class InterestService {
         userEntity.setInterest(dto.getInterest());
         userRepository.save(userEntity);
     }
+
+    public String getInterest(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (userEntity == null) {
+            throw new EmailNotFoundException("올바른 사용자가 아닙니다.");
+        }
+
+        return userEntity.getInterest();
+    }
 }
