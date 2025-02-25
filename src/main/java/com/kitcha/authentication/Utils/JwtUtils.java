@@ -26,6 +26,7 @@ public class JwtUtils {
         Date now = new Date();
 
         return Jwts.builder()
+                .claim("userId", customUserDetails.getUserId())
                 .claim("nickname", customUserDetails.getNickname())
                 .claim("role", customUserDetails.getRole())
                 .subject(customUserDetails.getUsername())
