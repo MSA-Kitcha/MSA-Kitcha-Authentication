@@ -8,13 +8,14 @@ import com.kitcha.authentication.service.LoginService;
 import com.kitcha.authentication.service.SignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
 
@@ -28,21 +29,34 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginMember(@Valid @RequestBody LoginDto dto) {
-        Pair<String, String> infomations = loginService.authenticate(dto);
-        String jwtToken = infomations.getFirst();
-        String role = infomations.getSecond();
+        List<String> information = loginService.authenticate(dto);
+        String jwtToken = information.get(0);
+        String role = information.get(1);
+        String interest = information.get(2);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + jwtToken);
 
         return ResponseEntity.ok().headers(headers).body(
-                Map.of("message", "로그인 성공", "role", role));
+                Map.of("message", "로그인 성공", "role", role, "interest", interest));
     }
 
     @PostMapping("/sign-up")
     public ResponseEntity<Map<String, String>> signUpMember(@Valid @RequestBody SignUpDto dto) {
         signUpService.signUpMember(dto);
 
-        return ResponseEntity.ok(singletonMap("message", "회원가입 성공"));
+        LoginDto loginDto = new LoginDto();
+        loginDto.setEmail(dto.getEmail());
+        loginDto.setPassword(dto.getPassword());
+
+        List<String> information = loginService.authenticate(loginDto);
+        String jwtToken = information.get(0);
+        String role = information.get(1);
+        String interest = information.get(2);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwtToken);
+
+        return ResponseEntity.ok().headers(headers).body(
+                Map.of("message", "회원가입 성공", "role", role, "interest", interest));
     }
 
     @GetMapping("/email-check")
