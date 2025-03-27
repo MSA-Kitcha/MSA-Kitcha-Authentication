@@ -2,9 +2,11 @@ package com.kitcha.authentication.controller;
 
 import com.kitcha.authentication.dto.InterestDto;
 import com.kitcha.authentication.dto.LoginDto;
+import com.kitcha.authentication.dto.NicknameDto;
 import com.kitcha.authentication.dto.SignUpDto;
 import com.kitcha.authentication.service.InterestService;
 import com.kitcha.authentication.service.LoginService;
+import com.kitcha.authentication.service.ProfileService;
 import com.kitcha.authentication.service.SignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
 
@@ -26,6 +27,7 @@ public class UserController {
     private final LoginService loginService;
     private final SignUpService signUpService;
     private final InterestService interestService;
+    private final ProfileService profileService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginMember(@Valid @RequestBody LoginDto dto) {
@@ -89,5 +91,14 @@ public class UserController {
         interestService.setInterest(email, dto);
 
         return ResponseEntity.ok(singletonMap("message", "관심사 설정 성공"));
+    }
+
+
+    @PostMapping("/nickname-change")
+    public ResponseEntity<Map<String, String>> setNickname( @RequestHeader("X-User-Email") String email, @Valid @RequestBody NicknameDto dto) {
+
+        profileService.setNickname(email, dto);
+
+        return ResponseEntity.ok(singletonMap("message", "닉네임 설정 성공"));
     }
 }
