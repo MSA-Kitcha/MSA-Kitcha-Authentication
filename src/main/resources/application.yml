@@ -2,4 +2,4 @@ spring:
   application:
     name: authentication
   config:
-    import: "optional:configserver:http://config-server:8071"
+    import: "optional:configserver:http://172.31.62.166:8071"
